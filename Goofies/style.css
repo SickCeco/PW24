@@ -1,0 +1,490 @@
+/*
+PALETTE COLORI: OLIVA
+#808000 - verde oliva (olive)
+#909010 - verde oliva chiaro
+#5c5c0a - verde oliva scuro
+#808066 - grigio olivastro
+#dcd6b6 - olive white
+#7A7150 - oliva beige
+#636854 - oliva chiaro
+#515642 - oliva scuro
+#9E875B - oliva giallo
+#5C584D - oliva grigio
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/*Inizializzazione pagina per riempire completamente lo schermo*/
+html, body, header, nav, section, footer {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins';
+  
+}
+
+header {
+  background-color: #5c5c0a;
+  text-align: center;
+  position: relative; /* Aggiunto per avere l'header sempre in cima alla pagina */
+}
+
+body {
+  background-color: #dcd6b6;
+}
+
+nav {
+  background-color: #5c5c0a;
+  padding: 10px 25px;
+  text-align: center;
+}
+
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+nav ul li {
+  flex-grow: 1; /* Fai espandere gli elementi per riempire lo spazio disponibile */
+}
+
+nav ul li a img {
+  width: 30%;
+  height: auto; /* Imposta l'altezza in base alla larghezza per mantenere le proporzioni */
+}
+
+#div-navigation {
+  background-color: olive;
+  border-radius: 25px;
+}
+
+#search-filter {
+  background-color: olive;
+  border-radius: 25px;
+}
+
+#label_risultato
+{
+  background-color: #fff;
+  padding: 20px;
+  margin: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  color: #333;
+  font-size: 1.1em;
+  line-height: 1.6;
+  position: relative;
+}
+
+.esito_positivo
+{
+  border-left: 5px solid #5c5c0a;
+}
+
+.esito_negativo
+{
+  border-left: 5px solid red;
+}
+#content {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #dcd6b6;
+}
+
+/* Stili per il footer */
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #5C584D;
+  text-align: center;
+  position: fixed;
+}
+
+/* Stili per il filtro di ricerca */
+#search-filter {
+  background-color: #dcd6b6;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+#search-filter label {
+  display: inline-block;
+  width: 70px;
+}
+
+#search-filter form {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#search-filter input {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+/* Stili per il logo */
+.logo {
+  position: relative;
+  width: 130px; /* Modificata la larghezza del logo */
+  height: auto;
+  transition: all 0.5s ease; 
+}
+
+/* STILI PER LE TABELLE */
+
+/* Stili per il contenitore della tabella */
+.table-container {
+  text-align: center;
+  overflow: auto; /* Aggiunge uno scrolling all'interno del contenitore */
+  max-height: 350px;
+  margin-top: 20px;
+  padding: 0 25px 100px 20px;
+}
+
+/* Stile per la tabella */
+table 
+{
+  width: 100%;
+  height: 80%; 
+  border-collapse: collapse;
+  border-radius: 10px;
+  border: 1px solid black;
+  overflow: hidden; /* Nasconde eventuali bordi arrotondati delle celle */
+  z-index: 50;
+  font-family: 'Poppins';
+}
+
+/* Stile per le celle dell'intestazione */
+th {
+  background-color: olive;
+  color: #ffffff;
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella dell'intestazione */
+  font-family: 'Poppins';
+}
+
+/* Stile per le righe della tabella */
+td {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella della riga */
+  font-family: 'Poppins';
+}
+
+/* Stile per le righe dispari della tabella */
+table tbody tr:nth-child(odd) {
+  background-color: #fff;
+  border-radius: 10px;
+}
+/* Stile per le righe pari della tabella */
+table tbody tr:nth-child(even) {
+  background-color: #EBEBD3;
+}
+
+/* Stile per il primo td di ogni riga */
+table tbody td:first-child {
+  border-top-left-radius: 10px; /* Arrotonda il bordo superiore sinistro */
+  border-bottom-left-radius: 10px; /* Arrotonda il bordo inferiore sinistro */
+}
+
+/* Stile per l'ultimo td di ogni riga */
+table tbody td:last-child {
+  border-top-right-radius: 10px; /* Arrotonda il bordo superiore destro */
+  border-bottom-right-radius: 10px; /* Arrotonda il bordo inferiore destro */
+}
+
+table tbody th:first-child {
+  border-top-left-radius: 10px; /* Arrotonda il bordo superiore destro */
+  border-bottom-left-radius: 10px;
+}
+
+table tbody th:last-child {
+  border-top-right-radius: 10px; /* Arrotonda il bordo superiore destro */
+  border-bottom-right-radius: 10px; /* Arrotonda il bordo inferiore destro */
+}
+
+th[id="actions"], td[id="actions"] {
+            cursor: default;
+        }
+
+th:hover {
+    cursor: pointer;
+}
+
+
+/*TABELLA PER HOME*/
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+
+}
+.info-table td {
+  vertical-align: top;
+  padding: 10px;
+  border: none; 
+  background: none; 
+}
+.info-table .title {
+  width: 5%;
+  border-right: 1px solid #000; 
+}
+.info-table .text {
+  width: 70%;
+  padding-left: 10px;
+  text-align: left; 
+}
+.info-table h2 {
+  margin: 0;
+  padding-bottom: 10px;
+  text-align: left;
+  padding-left: 20px;
+}
+.info-table .text-home {
+  margin: 0;
+}
+.info-table .column{
+  background: none; 
+  text-align: left;
+}
+
+input[type=text],
+input[type=date] {
+  position: relative;
+  cursor: text;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 11px;
+  width: 150px;
+  height: 30px;
+  background-color: #fff;
+  border: 2px;
+  border-color: olive;
+  border-radius: 25px;
+  box-shadow: inset 0 1px 4px 0 rgb(81 86 66 / 30%);
+  overflow: hidden;
+  display: inline-block;
+  font-family: 'Poppins';
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+input[type=text]:focus, 
+input[type=date]:focus{
+  color: olive;
+  transform: scale(1.05);
+  opacity: 0.9;
+  outline: none;
+}
+
+/*Nuovo Stile Bottone Animato*/
+button {
+  display: inline-block;
+  border-radius: 25px;
+  background-color: olive;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  font: 'Poppins';
+  padding: 11px;
+  width: 117px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
+}
+
+button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+  transform-origin: center;
+  background-color: olive;
+}
+
+span {
+  font-family: 'Poppins';
+}
+
+button:hover {
+  transform: scale(1.1); /* Ingrossa il testo al passaggio del mouse */
+}
+
+button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.linkGoBackToHome {
+  text-decoration: none;
+}
+
+.image-container {
+  margin-bottom: 50px; 
+  padding-bottom: 25px; 
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  padding-left: 25px; 
+  display: block; 
+}
+
+
+.container_title{
+	margin-left: 8px;
+	padding-left: 20px;
+    padding-right: 20px;
+	background-color: olive;
+    border-radius : 15px;
+    text-align: center;
+    width: fit-content;
+}
+
+.text-home{
+	padding-left: 20px;
+    padding-top: 5px;
+}
+
+.texthome{
+	padding: center;
+}
+
+#contentHome {
+  text-align: left;
+  min-height: 100vh; /* Altezza minima del contenitore pari all'altezza della finestra del browser */
+  display: flex; /* Imposta il display flessibile */
+  flex-direction: column; /* Imposta la direzione dei figli come colonna */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Divide lo spazio in due colonne */
+  padding-top: 25px; /* Aggiunge spazio sopra il corpo */
+  background-color: #dcd6b6;
+}
+
+#contentHome h2 {
+  color: #333;
+  font-family: 'Montserrat', sans-serif; /* Usa il font Montserrat per il titolo */
+}
+
+#contentHome p {
+  color: #666;
+}
+
+.grow {
+  transition: 0.5s ease;
+}
+
+.grow:hover {
+  -webkit-transform: scale(1.3);
+  -ms-transform: scale(1.3);
+  transform: scale(1.3);
+  transition: 1s ease;
+}
+
+#content {
+  z-index: 1;
+}
+
+.form_label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.2rem;
+  margin-top: 0.7rem;
+  display: block;
+  transition: all 0.3s;
+  transform: translateY(0rem);
+  position: relative;
+}
+
+/*.code_input
+{
+text-transform: uppercase;
+}
+::placeholder {
+            text-transform: none;
+        }*/
+
+@media only screen and (orientation: portrait) {
+
+  .image {
+    width: 100%;
+    height: auto;
+  }
+
+  .logo {
+    width: 80px; /* Modificata la larghezza del logo */
+    height: auto;
+    transition: all 0.5s ease; 
+  }
+
+  #container {
+    width: 50%;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  nav ul li a img {
+    width: 40%;
+    height: auto; /* Imposta l'altezza in base alla larghezza per mantenere le proporzioni */
+  transition: all 0.5s ease; 
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden; /* Nasconde eventuali bordi arrotondati delle celle */
+    z-index: 50;
+    transition: all 0.5s ease; 
+  }
+
+  /* Stile per le celle dell'intestazione */
+  th {
+    background-color: olive;
+    color: #ffffff;
+    padding: 0px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella dell'intestazione */
+    transition: all 0.5s ease; 
+  }
+
+  /* Stile per le righe della tabella */
+  td {
+    padding: 0px;
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella della riga */
+    transition: all 0.5s ease; 
+  }
+
+  #actions {
+    display: none;
+  transition: all 0.5s ease; 
+  }
+
+  input[type=text],
+  input[type=date] {
+  width: 20%;
+  height: 30px;
+  transition: all 0.5s ease; 
+}
+
+input[type=text]:focus,
+input[type=date]:focus {
+  border-color: #515642;
+  outline: none;
+  transition: all 0.5s ease; 
+}
+}
