@@ -8,6 +8,24 @@
   </head>
 
   <body>
+	<?php
+	if (count($_POST) > 0) {
+		$filtro_cssn = $_POST["filtro_cssn"];
+		$filtro_nome = $_POST["filtro_nome"];
+		$filtro_cognome = $_POST["filtro_cognome"];
+		$filtro_dataNascita = $_POST["filtro_dataNascita"];
+		$filtro_luogoNascita = $_POST["filtro_luogoNascita"];
+		$filtro_indirizzo = $_POST["filtro_indirizzo"];
+	  }
+	  else{
+		$filtro_cssn = '';
+		$filtro_nome = '';
+		$filtro_cognome ='';
+		$filtro_dataNascita = '';
+		$filtro_luogoNascita = '';
+		$filtro_indirizzo = '';
+	  }
+	?>
     <?php
       include 'DatabaseManager.php';
       include 'conndb.php';
@@ -24,14 +42,16 @@
 
     <div id="search-filter">
       <form id="form_cittadini" action="Cittadino.php" method="post">
-        <input type="text" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="code_input" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
-        <input type="text" placeholder="Nome" id="filtro_nome" name="filtro_nome" >
-        <input type="text" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome">
-        <input type="date" placeholder="Data di Nascita" id="filtro_dataNascita" name="filtro_dataNascita">
-        <input type="text" placeholder="Luogo di Nascita" id="filtro_luogoNascita" name="filtro_luogoNascita">
-        <input type="text" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+      	<button type= "button" class = "reset" onClick="resetFormC()"><span class = "reset">Reset &#128260</span></button>
+        <input type="text" value="<?php echo $filtro_cssn; ?>" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="code_input" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
+        <input type="text" value="<?php echo $filtro_nome; ?>" placeholder="Nome" id="filtro_nome" name="filtro_nome" >
+        <input type="text" value="<?php echo $filtro_cognome; ?>" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome">
+        <input type="date" value="<?php echo $filtro_dataNascita; ?>" placeholder="Data di Nascita" id="filtro_dataNascita" name="filtro_dataNascita">
+        <input type="text" value="<?php echo $filtro_luogoNascita; ?>" placeholder="Luogo di Nascita" id="filtro_luogoNascita" name="filtro_luogoNascita">
+        <input type="text" value="<?php echo $filtro_indirizzo; ?>" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
 
         <button type="submit"><span>Cerca &#128269</span></button>
+		
       </form>
     </div>
 
@@ -46,13 +66,20 @@
         $filtro_indirizzo = $_POST["filtro_indirizzo"];
       }
       
+      else if(count($_GET) > 0)
+      {
+        $filtro_cssn = $_GET["filtro_cssn"];
+        $filtro_nome = $_GET["filtro_nome"];
+        $filtro_cognome = $_GET["filtro_cognome"];
+        $filtro_dataNascita = $_GET["filtro_dataNascita"];
+        $filtro_luogoNascita = $_GET["filtro_luogoNascita"];
+        $filtro_indirizzo = $_GET["filtro_indirizzo"];
+      }
+      
       $query = selectFromCittadino($filtro_cssn, $filtro_nome, $filtro_cognome, $filtro_dataNascita, $filtro_luogoNascita, $filtro_indirizzo);
      
       try {
         $result = $conn->query($query);
-      ?>
-      <script>resetFormC();</script>
-      <?php
       } catch (PDOException $e) {
         echo "<p>Errore nel database durante la query: " . $e->getMessage() . "</p>";
         $error = true;

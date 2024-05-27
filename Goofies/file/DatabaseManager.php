@@ -6,7 +6,7 @@
         $sql = "SELECT * FROM Cittadino WHERE 1";
         
         if (!empty($filtro_cssn)) {
-            $sql .= " AND CSSN LIKE '%$filtro_cssn%'";
+            $sql .= " AND CSSN = '$filtro_cssn'";
         }
         if (!empty($filtro_nome)) {
             $sql .= " AND Nome LIKE '%$filtro_nome%'";
@@ -23,7 +23,18 @@
         if (!empty($filtro_indirizzo)) {
             $sql .= " AND indirizzo LIKE '%$filtro_indirizzo%'";
         }
-        
+      
+        return $sql;
+      }
+      
+      function selectDirettoreLibero()
+      {
+      	$sql = "SELECT CSSN, Nome, Cognome FROM Cittadino WHERE CSSN NOT IN (SELECT DirettoreSanitario FROM Ospedale)";
+        return $sql;
+      }
+      function selectDirettore()
+      {
+      	$sql = "SELECT CSSN, Nome, Cognome FROM Cittadino WHERE 1";
         return $sql;
       }
       
@@ -39,7 +50,7 @@
             $sql .= " AND r.CodOspedale LIKE '%$filtro_codOspedale%'";
         }
         if (!empty($filtro_codRicovero)) {
-            $sql .= " AND r.Cod LIKE '%$filtro_codRicovero%'";
+            $sql .= " AND r.CodRicovero LIKE '%$filtro_codRicovero%'";
         }
         if (!empty($filtro_paziente)) {
             $sql .= " AND r.Paziente LIKE '%$filtro_paziente%'";
@@ -162,7 +173,7 @@
         if (!empty($codiceDirettoreSanitario)) 
         {
         	// Verifica che il direttore sanitario sia presente nel database come cittadino
-        	$sql = "SELECT * FROM Cittadino WHERE CSSN LIKE '%$codiceDirettoreSanitario%'";
+        	$sql = "SELECT * FROM Cittadino WHERE CSSN = '$codiceDirettoreSanitario'";
         	$presente = $conn->query($sql);
             if ($presente->num_rows == 0) 
             {        
@@ -171,7 +182,7 @@
             }
 
             // Verifica se il direttore sanitario non sia già direttore di un altro ospedale
-            $sql = "SELECT * FROM Ospedale WHERE DirettoreSanitario LIKE '%$codiceDirettoreSanitario%'";
+            $sql = "SELECT * FROM Ospedale WHERE DirettoreSanitario = '$codiceDirettoreSanitario'";
             $libero = $conn->query($sql);
 
             if ($libero->num_rows > 0)
@@ -179,6 +190,7 @@
               echo "<label id='label_risultato' class='esito_negativo'> Il direttore che hai selezionato è già direttore di un altro ospedale! </label>";
               return "";
             }
+            
         }
        
       	// Aggiorna il record nella tabella Ospedale
@@ -202,8 +214,8 @@
         $sql .= implode(', ', $setValues);
         
         $sql .= " WHERE Codice='$codiceOspedale'";
-		
-		return $sql;    
+	
+		return $sql;
   	}
 
     function deleteFromOspedale($codice) 
@@ -216,13 +228,13 @@
         {
             $sql = "DELETE FROM Ospedale WHERE Codice='$codice'";
         	$conn->query("DELETE FROM Ricovero WHERE CodOspedale ='$codice'");
+            $conn->query("DELETE FROM PatologiaRicovero WHERE CodOspedale ='$codice'");
             
         } else {
         	 echo "<label id='label_risultato' class='esito_negativo'> Il codice che hai selezionato non appartiene a nessun ospedale! </label>";
             $sql = "";
     	}
-        
-        
+
     	return $sql;
 	}
     

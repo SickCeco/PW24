@@ -88,6 +88,7 @@ nav ul li a img {
 {
   border-left: 5px solid red;
 }
+
 #content {
   width: 100%;
   height: 100%;
@@ -147,16 +148,17 @@ footer {
 .table-container {
   text-align: center;
   overflow: auto; /* Aggiunge uno scrolling all'interno del contenitore */
-  max-height: 350px;
+  max-height: 450px;
   margin-top: 20px;
-  padding: 0 25px 100px 20px;
+  padding: 0 25px 200px 20px;
 }
+
 
 /* Stile per la tabella */
 table 
 {
   width: 100%;
-  height: 80%; 
+  height: 10%; 
   border-collapse: collapse;
   border-radius: 10px;
   border: 1px solid black;
@@ -164,6 +166,7 @@ table
   z-index: 50;
   font-family: 'Poppins';
 }
+
 
 /* Stile per le celle dell'intestazione */
 th {
@@ -173,6 +176,7 @@ th {
   text-align: center;
   border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella dell'intestazione */
   font-family: 'Poppins';
+  transition: all 0.5s ease;
 }
 
 /* Stile per le righe della tabella */
@@ -181,6 +185,7 @@ td {
   text-align: center;
   border-bottom: 1px solid #ddd; /* Aggiunge una linea alla fine di ogni cella della riga */
   font-family: 'Poppins';
+  transition: all 0.5s ease;
 }
 
 /* Stile per le righe dispari della tabella */
@@ -260,14 +265,18 @@ th:hover {
   text-align: left;
 }
 
+
+/* INPUT E BOTTONI */
+
 input[type=text],
-input[type=date] {
+input[type=date],
+input[type=readonly]{
   position: relative;
   cursor: text;
   font-size: 14px;
   line-height: 20px;
   padding: 11px;
-  width: 150px;
+  width: 125px;
   height: 30px;
   background-color: #fff;
   border: 2px;
@@ -281,14 +290,15 @@ input[type=date] {
 }
 
 input[type=text]:focus, 
-input[type=date]:focus{
+input[type=date]:focus,
+input[type=readonly]:focus{
   color: olive;
   transform: scale(1.05);
   opacity: 0.9;
   outline: none;
 }
 
-/*Nuovo Stile Bottone Animato*/
+/* Stile Bottone Animato*/
 button {
   display: inline-block;
   border-radius: 25px;
@@ -317,6 +327,7 @@ button span {
 
 span {
   font-family: 'Poppins';
+  transition: all 0.5s ease;
 }
 
 button:hover {
@@ -327,6 +338,35 @@ button:hover span:after {
   opacity: 1;
   right: 0;
 }
+
+#closePopupBtn {
+    position: absolute;
+    top: -35px;
+    right: -30px;
+    background-color:  #5C584D;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#closePopupBtn:hover {
+    color: red;
+}
+
+.reset:hover {
+    background-color: red;
+}
+
+.reset:hover .reset{
+    background-color: red;
+}
+
 
 .linkGoBackToHome {
   text-decoration: none;
@@ -343,7 +383,6 @@ button:hover span:after {
   padding-left: 25px; 
   display: block; 
 }
-
 
 .container_title{
 	margin-left: 8px;
@@ -362,6 +401,91 @@ button:hover span:after {
 
 .texthome{
 	padding: center;
+}
+
+/* Stile Bottone chiusura */
+
+.button-chiusura{
+  position: absolute; 
+  top: 20px; 
+  right: 20px;
+}
+
+/* Stile Bottone 2 */
+
+.button-2{
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #EBEBD3; 
+  padding: 20px; 
+  border-radius: 10px;
+}
+
+.button-2-1{
+  position: absolute; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background-color: #EBEBD3; 
+  padding: 10px; 
+  border-radius: 10px;
+}
+
+
+
+/* Stile Bottone Direttore Div */
+
+.pop-up-div{
+	display: none; 
+    position: fixed; 
+    top: 0; 
+    left: -300px; 
+    width: 140%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.form-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.form-inline input,
+.form-inline button,
+.form-inline .union_button_input_direttore {
+    display: inline-block;
+    margin: 5px; /* Spazio tra gli elementi */
+}
+
+.union_button_input_direttore {
+    display: flex;
+    align-items: center;
+    background-color : #dcd6b6;
+    border-radius : 15px;
+}
+
+#union_button_input_direttore_update{
+	background-color: #EBEBD3;
+}
+
+
+
+
+/* Stile Bottone PopUp Dettagli */
+
+.pop-up-div-2{
+   display: none; 
+   position: fixed; 
+   top: 0; 
+   left: 50%; 
+   width: 160%; 
+   height: 100%; 
+   background-color: rgba(0, 0, 0, 0.5); 
+   transform: translateX(-50%);
 }
 
 #contentHome {
@@ -409,19 +533,43 @@ button:hover span:after {
   position: relative;
 }
 
-/*.code_input
+.code_input_ricovero 
 {
-text-transform: uppercase;
+  position: relative;
+  cursor: text;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 11px;
+  width: 50px;
+  height: 30px;
+  background-color: #fff;
+  border: 2px;
+  border-color: olive;
+  border-radius: 25px;
+  box-shadow: inset 0 1px 4px 0 rgb(81 86 66 / 30%);
+  overflow: hidden;
+  display: inline-block;
+  font-family: 'Poppins';
+  transition: color 0.3s ease, transform 0.3s ease;
 }
-::placeholder {
-            text-transform: none;
-        }*/
 
+a
+{
+	color: olive;
+    text-decoration: none;
+    transition: all 0.5s ease;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
 @media only screen and (orientation: portrait) {
 
   .image {
     width: 100%;
     height: auto;
+    transition: all 0.5s ease;
   }
 
   .logo {
@@ -432,6 +580,7 @@ text-transform: uppercase;
 
   #container {
     width: 50%;
+    transition: all 0.5s ease;
   }
 }
 
@@ -469,10 +618,16 @@ text-transform: uppercase;
     transition: all 0.5s ease; 
   }
 
-  #actions {
-    display: none;
+ #actions {
+  display: inline-block;
+  border-radius: 25px;
+  color: #FFFFFF;
+  font-size: 15px;
+  padding: 0px;
+  width: 80px;
   transition: all 0.5s ease; 
   }
+ 
 
   input[type=text],
   input[type=date] {

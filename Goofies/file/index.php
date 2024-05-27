@@ -21,13 +21,17 @@
               	<div class = "container_title"> <h1>Gawrsh! Benvenuto nel Goofy Hospital</h1> </div>
                 <p class = "text-home">GoofyCare è un software completo per la gestione ospedaliera 
                 progettato su misura per ottimizzare le operazioni quotidiane del 
-                divertente ma efficiente ospedale Goofy. Con una suite di strumenti 
-                intuitivi e potenti, GoofyCare semplifica la pianificazione delle risorse, 
-                la gestione dei pazienti, la compilazione dei report e la comunicazione interna. 
-                Grazie alla sua interfaccia user-friendly e alle sue funzionalità personalizzabili, 
-                GoofyCare è l'alleato perfetto per garantire che tutto vada alla perfezione nel mondo
-                ospedaliero di Goofy.</p><br>
+                divertente ma efficiente ospedale Goofy. 
+                
+                
+                </p>
             
+            <p class = "text-home">Puoi navigare nelle varie sezioni del sito sia tramite la comoda navbar posta 
+            al di sopra della pagina, sia selezionando i <strong><a>link di colore verde</a></strong> per raggiungere
+            rapidamente il dato che ti interessa!
+                
+                
+                </p>
               <table class="info-table">
 
                 <tr class = "column">
