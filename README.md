@@ -16,4 +16,4 @@ Processo per importare il progetto e avviare il server:
 
 5)	avvia il server:
 
-		python manage.py runserver 
+		python manage.py runserver
