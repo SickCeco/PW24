@@ -15,7 +15,7 @@ Processo per importare il progetto e avviare il server:
  	per windows:
 
 		python -m venv venv
-		source venv/bin/activate
+		venv/Scripts/Activate
 	
 		pip install -r requirements.txt
 
