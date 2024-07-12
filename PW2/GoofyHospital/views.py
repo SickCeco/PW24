@@ -6,3 +6,15 @@ def home(request):
 
 def funct(request):
     return HttpResponse("Ciao Tubw")
+
+def cittadini(request):
+    return render(request, 'cittadini.html')
+
+def ospedali(request):
+    return render(request, 'ospedali.html')
+
+def ricoveri(request):
+    return render(request, 'ricoveri.html')
+
+def patologie(request):
+    return render(request, 'patologie.html')
