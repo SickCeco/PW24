@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Cittadino</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+</head>
+
+<body>
+    {% include 'header.html' %}
+    {% include 'navigation.html' %}
+
+    <div id="search-filter">
+        <form id="form_cittadini" method="get">
+            {{ form.filtro_cssn }}
+            {{ form.filtro_nome }}
+            {{ form.filtro_cognome }}
+            {{ form.filtro_dataNascita }}
+            {{ form.filtro_luogoNascita }}
+            {{ form.filtro_indirizzo }}
+            <button type="submit">Cerca &#128269</button>
+            <button type="button" class="reset" onclick="resetFormC()">Reset &#128260</button>
+        </form>
+    </div>
+
+    <div id="content">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>CSSN</th>
+                        <th>Nome</th>
+                        <th>Cognome</th>
+                        <th>Data di Nascita</th>
+                        <th>Luogo di Nascita</th>
+                        <th>Indirizzo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cittadino in cittadini %}
+                    <tr>
+                        <td>{{ cittadino.cssn }}</td>
+                        <td>{{ cittadino.nome }}</td>
+                        <td>{{ cittadino.cognome }}</td>
+                        <td>{{ cittadino.DataNascita }}</td>
+                        <td>{{ cittadino.LuogoNascita }}</td>
+                        <td>{{ cittadino.indirizzo }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>
