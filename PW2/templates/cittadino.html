@@ -1,58 +1,61 @@
+{% extends 'base.html' %}
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>Cittadino</title>
-    {% load static %}
-    <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-</head>
+    <head>
+        <title>Cittadino</title>
+        {% load static %}
+        <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <script src="{% static 'js/script.js' %}"></script>
+    </head>
 
 <body>
-    {% include 'header.html' %}
-    {% include 'navigation.html' %}
+    
+{% block title %}Cittadini{% endblock %}
 
-    <div id="search-filter">
-        <form id="form_cittadini" method="get">
-            {{ form.filtro_cssn }}
-            {{ form.filtro_nome }}
-            {{ form.filtro_cognome }}
-            {{ form.filtro_dataNascita }}
-            {{ form.filtro_luogoNascita }}
-            {{ form.filtro_indirizzo }}
-            <button type="submit">Cerca &#128269</button>
-            <button type="button" class="reset" onclick="resetFormC()">Reset &#128260</button>
-        </form>
+{% block content %}
+<div class="container">
+    <h2>Lista dei Cittadini</h2>
+    <form id="form_cittadini" method="get" action="{% url 'cittadino' %}">
+        <button type="button" class="reset" onClick="resetFormC()">
+            <span class="reset">Reset &#128260</span>
+        </button>
+        <input type="text" value="{{ request.GET.filtro_cssn }}" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="code_input" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
+        <input type="text" value="{{ request.GET.filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome">
+        <input type="text" value="{{ request.GET.filtro_cognome }}" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome">
+        <input type="date" value="{{ request.GET.filtro_dataNascita }}" placeholder="Data di Nascita" id="filtro_dataNascita" name="filtro_dataNascita">
+        <input type="text" value="{{ request.GET.filtro_luogoNascita }}" placeholder="Luogo di Nascita" id="filtro_luogoNascita" name="filtro_luogoNascita">
+        <input type="text" value="{{ request.GET.filtro_indirizzo }}" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+        <button type="submit"><span>Cerca &#128269</span></button>
+    </form>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">CSSN ↕</th>
+                    <th onclick="sortTable(1)">Nome ↕</th>
+                    <th onclick="sortTable(2)">Cognome ↕</th>
+                    <th onclick="sortTable(3)">Data di Nascita ↕</th>
+                    <th onclick="sortTable(4)">Luogo di Nascita ↕</th>
+                    <th onclick="sortTable(5)">Indirizzo ↕</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cittadino in cittadini %}
+                <tr>
+                    <td>{{ cittadino.cssn }}</td>
+                    <td>{{ cittadino.nome }}</td>
+                    <td>{{ cittadino.cognome }}</td>
+                    <td>{{ cittadino.DataNascita }}</td>
+                    <td>{{ cittadino.LuogoNascita }}</td>
+                    <td>{{ cittadino.indirizzo }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <div id="content">
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>CSSN</th>
-                        <th>Nome</th>
-                        <th>Cognome</th>
-                        <th>Data di Nascita</th>
-                        <th>Luogo di Nascita</th>
-                        <th>Indirizzo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for cittadino in cittadini %}
-                    <tr>
-                        <td>{{ cittadino.cssn }}</td>
-                        <td>{{ cittadino.nome }}</td>
-                        <td>{{ cittadino.cognome }}</td>
-                        <td>{{ cittadino.DataNascita }}</td>
-                        <td>{{ cittadino.LuogoNascita }}</td>
-                        <td>{{ cittadino.indirizzo }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+</div>
+{% endblock %}
 
     {% include 'footer.html' %}
 </body>
