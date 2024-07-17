@@ -1,4 +1,72 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Patologie</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+</head>
+
+<body>
 {% block content %}
-<h1>Ricoveri</h1>
+<div id="search-filter">
+    <form id="form_ricoveri" action="{% url 'ricoveri' %}" method="post">
+        {% csrf_token %}
+        <button type="button" class="reset" onClick="resetFormR()">
+            <span class="reset">Reset &#128260</span>
+        </button>
+        <input type="text" value="{{ filtro_codOspedale }}" placeholder="Codice Ospedale" id="filtro_codOspedale" name="filtro_codOspedale" pattern="OSP\d{2}" class="code_input_ricovero" title="Il codice deve essere nel formato OSP seguito da due cifre.">
+        <input type="text" value="{{ filtro_codRicovero }}" placeholder="Codice Ricovero" id="filtro_codRicovero" name="filtro_codRicovero" pattern="RIC\d{3}" class="code_input_ricovero" title="Il codice deve essere nel formato RIC seguito da tre cifre.">
+        <input type="text" value="{{ filtro_paziente }}" placeholder="Paziente" id="filtro_paziente" name="filtro_paziente" pattern="CSSN\d+" class="code_input_ricovero" title="Il codice deve essere nel formato CSSN seguito da almeno una cifra.">
+        <input type="date" value="{{ filtro_dataRicovero }}" placeholder="Data Ricovero" id="filtro_dataRicovero" name="filtro_dataRicovero" class="code_input_ricovero">
+        <input type="text" value="{{ filtro_durata }}" placeholder="Durata" id="filtro_durata" name="filtro_durata" class="code_input_ricovero">
+        <input type="text" value="{{ filtro_motivo }}" placeholder="Motivo" id="filtro_motivo" name="filtro_motivo" class="code_input_ricovero">
+        <input type="text" value="{{ filtro_costo }}" placeholder="Costo" id="filtro_costo" name="filtro_costo" class="code_input_ricovero">
+        <button type="submit"><span>Cerca &#128269</span></button>
+    </form>
+</div>
+
+<div id="content">
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr class="header">
+                    <th>Codice Ospedale</th>
+                    <th>Codice Ricovero</th>
+                    <th>Paziente</th>
+                    <th>Data</th>
+                    <th>Durata</th>
+                    <th>Motivo</th>
+                    <th>Costo</th>
+                    <th>Patologia</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for riga in result %}
+                <tr>
+                    <td>{{ riga.cod_ospedale }}</td>
+                    <td>{{ riga.cod_ricovero }}</td>
+                    <td>{{ riga.paziente }}</td>
+                    <td>{{ riga.data_ricovero }}</td>
+                    <td>{{ riga.durata }}</td>
+                    <td>{{ riga.motivo }}</td>
+                    <td>{{ riga.costo }}</td>
+                    <td>{{ riga.patologia }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="footer">
+    {% include 'footer.html' %}
+</div>
 {% endblock %}
+</body>
+
+</html>

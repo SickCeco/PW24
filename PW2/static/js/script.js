@@ -205,17 +205,18 @@ function showPopup(codicePatologia, dettagliRicoveri)
     var popup = document.getElementById("popupDettagli");
     var tableBody = document.getElementById("dettagliRicoveriBody");
     var tableHead =  document.getElementById("dettagliRicoveriHead");
-	var content = document.getElementById("ricoveri_null");
+	  var content = document.getElementById("ricoveri_null");
     
     console.log('dettagliRicoveri:', dettagliRicoveri);
+    console.log(codicePatologia);
     console.log('dettagliRicoveri[codicePatologia]:', dettagliRicoveri[codicePatologia]);
     
     tableBody.innerHTML = ''; // Pulizia del corpo della tabella
     tableHead.innerHTML = ''; 
-	content.innerText = '';
+	  content.innerText = '';
     
     var ricoveri = dettagliRicoveri[codicePatologia]; // Ottieni l'array dei ricoveri per la patologia selezionata
-    if (ricoveri && ricoveri.length > 0) 
+    if (ricoveri && dettagliRicoveri.length >= 0) 
     {
     	var head = document.createElement("tr");
         head.innerHTML=
