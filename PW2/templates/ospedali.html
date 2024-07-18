@@ -1,4 +1,221 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h1>Ospedali</h1>
-{% endblock %}
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title>Ospedale</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+    </head>
+    <body id="wholePage">
+        
+        <div>
+            <div id="search-filter">
+                <div id="operation-selection">
+                    <button onclick="selectOperation('select');"><span>Cerca &#128269</span></button>
+                    <button onclick="selectOperation('insert'); resettaContent()"><span>Inserisci ➕</span></button>
+                </div>
+                <br>
+                <div id="filters">
+                    <div class="filter select" style="display: none;">
+                        <form id="form_ospedale" class="form-inline" action="{% url 'ospedali' %}" method="post">
+                            {% csrf_token %}
+                            <button type="button" class="reset" onclick="resetFormO()"><span class="reset">Reset &#128260</span></button>
+                            <input type="hidden" name="operation" value="select">
+                            <input type="text" id="filtro_codice" value="{{ filtro_codice }}" placeholder="Codice Ospedale" name="filtro_codice" pattern="OSP\d{2}" class="code_input" title="Il codice deve essere nel formato OSP seguito da due cifre.">
+                            <input type="text" id="filtro_nome" value="{{ filtro_nome }}" placeholder="Nome" name="filtro_nome" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                            <input type="text" id="filtro_citta" value="{{ filtro_citta }}" placeholder="Città" name="filtro_citta" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                            <input type="text" id="filtro_indirizzo" value="{{ filtro_indirizzo }}" placeholder="Indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+                            <div id="union_button_input_direttore_select" class="union_button_input_direttore">
+                                <button type="button" onclick="showAllChoiceDirettore('select')"><span id="span_cerca_direttore">Direttore</span></button>
+                                <input type="text" style="display:none" id="filtro_direttoreSanitario" value="{{ filtro_direttoreSanitario }}" placeholder="Direttore Sanitario" name="filtro_direttoreSanitario" readonly>
+                            </div>
+                            <button type="submit"><span>Esegui</span></button>
+                        </form>
+                    </div>
+
+                    <div class="filter insert" style="display: none;">
+                        <form id="form_ospedale" class="form-inline" action="{% url 'ospedali' %}" method="post" onsubmit="return validateForm()">
+                            {% csrf_token %}
+                            <button type="button" class="reset" onclick="resetFormO()"><span class="reset">Reset &#128260</span></button>
+                            <input type="hidden" name="operation" value="insert">
+                            <input type="text" id="filtro_nome_new" value="{{ filtro_nome_new }}" placeholder="Nome" name="filtro_nome" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi" required>
+                            <input type="text" id="filtro_citta_new" value="{{ filtro_citta_new }}" placeholder="Città" name="filtro_citta" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi" required>
+                            <input type="text" id="filtro_indirizzo_new" value="{{ filtro_indirizzo_new }}" placeholder="Indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'." required>
+                            <div id="union_button_input_direttore_insert" class="union_button_input_direttore">
+                                <button type="button" class="bottone_cerca_direttore" onclick="showChoiceDirettore('insert')"><span id="span_cerca_direttore">Direttore</span></button>
+                                <input style="display:none" type="text" id="filtro_direttoreSanitario_new" value="{{ filtro_direttoreSanitario_new }}" placeholder="Scegli il direttore" name="filtro_direttoreSanitario" required readonly>
+                            </div>
+                            <button type="submit"><span>Esegui</span></button>    
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="content">
+                {% if success_message %}
+                    <label id="label_risultato" class="esito_positivo">{{ success_message }}</label>
+                {% elif error_message %}
+                    <label id="label_risultato" class="esito_negativo">{{ error_message }}</label>
+                {% endif %}
+
+                <div id="divTable" class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable(0)">Codice ↕</th>
+                                <th onclick="sortTable(1)">Nome ↕</th>
+                                <th onclick="sortTable(2)">Città ↕</th>
+                                <th onclick="sortTable(3)">Indirizzo ↕</th>
+                                <th colspan="2">Direttore Sanitario</th>
+                                <th>Modifica</th>
+                                <th>Elimina</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th onclick="sortTable(4)">Codice ↕</th>
+                                <th onclick="sortTable(5)">Nome ↕</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in result %}
+                            <tr>
+                                <td>{{ row.Codice }}</td>
+                                <td>{{ row.Nome }}</td>
+                                <td>{{ row.Citta }}</td>
+                                <td>{{ row.Indirizzo }}</td>
+                                <td>{{ row.DirettoreSanitarioCSSN }}</td>
+                                <td>{{ row.DirettoreSanitarioNome }}</td>
+                                <td><button onclick="showUpdate('{{ row.Codice }}')" id="actions"><span>&#128397</span></button></td>
+                                <td><button onclick="showConfirmation('{{ row.Codice }}')" id="actions"><span>&#128465</span></button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="confirmationModal" class = "pop-up-div">
+                <div class="button-2">
+                 <div class="button-chiusura">
+                        <!-- Bottone di chiusura -->
+                        <button type="button" id="closePopupBtn" onclick="hideConfirmation()">&times;</button>
+                    </div>
+                    <p>Sei sicuro di voler eliminare questo elemento?<br>Così facendo eliminerai anche i ricoveri associati a questo ospedale!</p>
+                    <form id="form_ospedale" action="{% url 'ospedali' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="operation" value="delete">
+                        <input type="hidden" id ="filtro_codice_delete" name="filtro_codice">
+                        <br>
+                        <button type="submit"><span>Conferma</span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="updateDiv" class = "pop-up-div">
+            <div class="button-2">
+              <div class="button-chiusura">
+                  <button type="button" id="closePopupBtn" onclick="hideUpdate()">&times;</button>
+              </div>
+              <p>Inserisci i valori da modificare</p>
+                <form id="form_ospedale" action="{% url 'ospedali' %}" method="post" onsubmit="return validateFormUpdate()">
+                    {% csrf_token %}
+                    <input type="hidden" name="operation" value="update">
+                    <input type="hidden" id="filtro_codice_update" name="filtro_codice">
+                    <input type="text" placeholder="Nome" id="filtro_nome_new_up" name="filtro_nome_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                    <input type="text" placeholder="Città" id="filtro_citta_new_up" name="filtro_citta_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                    <input type="text" placeholder="Indirizzo" id="filtro_indirizzo_new_up" name="filtro_indirizzo_new" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+                    <div id = "union_button_input_direttore_update" class="union_button_input_direttore">
+                        <button type="button" class = "bottone_cerca_direttore" onclick="showChoiceDirettore('update')"><span>Direttore</span></button>
+                        <input type="text" style="display:none" id="filtro_direttoreSanitario_new_update" value="{{ filtro_direttoreSanitario_new }}" placeholder="Scegli il direttore" name="filtro_direttoreSanitario_new" readonly>    
+                    </div>
+                    <br><br> <br><br>
+                    <button type="submit"><span>Esegui</span></button>
+                </form>
+            </div>
+        </div>
+
+        <div id="direttoreDiv" class="pop-up-div">
+            <div class="button-2">
+                <div class="button-chiusura">
+                    <button type="button" id="closePopupBtn" onclick="hideChoiceDirettore('')">&times;</button>
+                </div>
+                <input type="hidden" id="utilizzatore">
+                <div class="table-container">
+                    <h4>Questa è la lista dei direttori Sanitari non ancora assegnati</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Codice</th>
+                                <th>Seleziona</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if direttori_liberi %}
+                                {% for direttore in direttori_liberi %}
+                                    <tr>
+                                        <td>{{ direttore.nome }} {{ direttore.cognome }}</td>
+                                        <td>{{ direttore.cssn }}</td>
+                                        <td>
+                                            <button type="button" class="selectDirettoreBtn" onclick="hideChoiceDirettore('{{ direttore.cssn }}')" id="actions">Seleziona</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="3">Nessun direttore sanitario trovato</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+        <div id="All_direttoreDiv" class="pop-up-div">
+            <div class="button-2">
+                <div class="button-chiusura">
+                    <button type="button" id="closePopupBtn" onclick="hideChoiceDirettore('')">&times;</button>
+                </div>
+                <input type="hidden" id="utilizzatore">
+                <div class="table-container">
+                    <h4>Questa è la lista di tutti i direttori Sanitari</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Codice</th>
+                                <th>Seleziona</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if tutti_direttori %}
+                                {% for direttore in tutti_direttori %}
+                                    <tr>
+                                        <td>{{ direttore.nome }} {{ direttore.cognome }}</td>
+                                        <td>{{ direttore.cssn }}</td>
+                                        <td>
+                                            <button type="button" class="selectDirettoreBtn" onclick="hideChoiceDirettore('{{ direttore.cssn }}')" id="actions">Seleziona</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr><td colspan="3">Nessun direttore sanitario trovato</td></tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    
+        {% endblock %}
+    </body>
+</html>

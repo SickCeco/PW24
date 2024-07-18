@@ -45,7 +45,7 @@ function resetFormR()
 
 function validateForm() {
   var input = document.getElementById('filtro_direttoreSanitario_new');
- 
+  console.log(input);
   if (!input.value) {
     alert('Per favore, imposta il valore del campo richiesto cliccando il bottone.');
     return false; // Previene l'invio del form
@@ -133,11 +133,11 @@ function hideConfirmation()
 function showUpdate(codice) 
 {
 	  var contentTable = document.getElementById("divTable");
-      var UpdateDiv = document.getElementById("updateDiv");
-      document.getElementById("filtro_codice_update").value = codice;
-      UpdateDiv.style.opacity = 10; // Metti la tabella in secondo piano
-      UpdateDiv.style.display = "block"; // Mostra la seconda div
-      UpdateDiv.style.zIndex = 100;
+    var UpdateDiv = document.getElementById("updateDiv");
+    document.getElementById("filtro_codice_update").value = codice;
+    UpdateDiv.style.opacity = 10; // Metti la tabella in secondo piano
+    UpdateDiv.style.display = "block"; // Mostra la seconda div
+    UpdateDiv.style.zIndex = 100;
       
 }
 
@@ -200,55 +200,50 @@ function hideChoiceDirettore(codice)
       inputElement.value = codice;
 }
 
-function showPopup(codicePatologia, dettagliRicoveri) 
-{
-    var popup = document.getElementById("popupDettagli");
-    var tableBody = document.getElementById("dettagliRicoveriBody");
-    var tableHead =  document.getElementById("dettagliRicoveriHead");
-	  var content = document.getElementById("ricoveri_null");
-    
-    console.log('dettagliRicoveri:', dettagliRicoveri);
-    console.log(codicePatologia);
-    console.log('dettagliRicoveri[codicePatologia]:', dettagliRicoveri[codicePatologia]);
-    
-    tableBody.innerHTML = ''; // Pulizia del corpo della tabella
-    tableHead.innerHTML = ''; 
-	  content.innerText = '';
-    
-    var ricoveri = dettagliRicoveri[codicePatologia]; // Ottieni l'array dei ricoveri per la patologia selezionata
-    if (ricoveri && dettagliRicoveri.length >= 0) 
-    {
-    	var head = document.createElement("tr");
-        head.innerHTML=
-            "<th>Data</th>" + 
-            "<th>Codice Ricovero</th>" +
-            "<th>Ospedale</th>" +
-            "<th>Paziente</th>" +
-            "<th>Motivo</th>" +
-            "<th>Costo</th>";
-         tableHead.appendChild(head);
-         
-    for (var i = 0; i < ricoveri.length; i++) 
-    {
-        var ricovero = ricoveri[i];
-        
-        var row = document.createElement("tr");
-        row.innerHTML = 
-            "<td>" + ricovero.Data + "</td>" +
-            "<td>" + ricovero.CodRicovero + "</td>" +
-            "<td>" + ricovero.CodOspedale + "</td>" +
-            "<td>" + ricovero.Paziente + "</td>" +
-            "<td>" + ricovero.Motivo + "</td>" +
-            "<td>" + ricovero.Costo + "</td>";
-        tableBody.appendChild(row);
-    }
-    } else {
-      content.innerText = '';
-      content.innerText = "Non ci sono ricoveri per questa patologia";
-    }
+function showPopup(button) {
+  var codicePatologia = button.parentNode.parentNode.children[0].textContent;
+  var dettagliRicoveriString = document.getElementById('ricoveri_' + codicePatologia).value;
+  var dettagliRicoveri = JSON.parse(dettagliRicoveriString);
+  
+  var popup = document.getElementById("popupDettagli");
+  var tableBody = document.getElementById("dettagliRicoveriBody");
+  var tableHead = document.getElementById("dettagliRicoveriHead");
+  var content = document.getElementById("ricoveri_null");
 
-    popup.style.display = 'block'; // Mostra il popup
-    popup.style.zIndex = 100;
+  tableBody.innerHTML = ''; // Pulizia del corpo della tabella
+  tableHead.innerHTML = ''; 
+  content.innerText = '';
+
+  if (dettagliRicoveri.length > 0) {
+      var head = document.createElement("tr");
+      head.innerHTML =
+          "<th>Data</th>" + 
+          "<th>Codice Ricovero</th>" +
+          "<th>Ospedale</th>" +
+          "<th>Paziente</th>" +
+          "<th>Motivo</th>" +
+          "<th>Costo</th>";
+      tableHead.appendChild(head);
+
+      for (var i = 0; i < dettagliRicoveri.length; i++) {
+          var ricovero = dettagliRicoveri[i];
+
+          var row = document.createElement("tr");
+          row.innerHTML = 
+              "<td>" + ricovero.Data + "</td>" +
+              "<td>" + ricovero.CodRicovero + "</td>" +
+              "<td>" + ricovero.CodOspedale + "</td>" +
+              "<td>" + ricovero.Paziente + "</td>" +
+              "<td>" + ricovero.Motivo + "</td>" +
+              "<td>" + ricovero.Costo + "</td>";
+          tableBody.appendChild(row);
+      }
+  } else {
+      content.innerText = "Non ci sono ricoveri per questa patologia";
+  }
+
+  popup.style.display = 'block'; // Mostra il popup
+  popup.style.zIndex = 100;
 }
 
 

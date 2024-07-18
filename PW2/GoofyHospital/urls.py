@@ -25,6 +25,7 @@ urlpatterns = [
     path('cittadino', views.cittadino_view, name="cittadino"),
     path('ricoveri', views.ricoveri, name="ricoveri"),
     path('patologie', views.patologie, name="patologie"),
+   
 ]
 
 
