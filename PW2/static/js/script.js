@@ -7,8 +7,8 @@ function resetFormC()
     document.getElementById("filtro_cssn").value = "";
     document.getElementById("filtro_nome").value = "";
     document.getElementById("filtro_cognome").value = "";
-    document.getElementById("filtro_dataNascita").value = "";
-    document.getElementById("filtro_luogoNascita").value = "";
+    document.getElementById("filtro_data_nascita").value = "";
+    document.getElementById("filtro_luogo_nascita").value = "";
     document.getElementById("filtro_indirizzo").value = "";
 }
 

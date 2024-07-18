@@ -1,5 +1,5 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse # type: ignore
+from django.shortcuts import render # type: ignore
 from .queries import * 
 from .models import *
 import json
@@ -42,9 +42,9 @@ def cittadino_view(request):
     if filtro_cognome:
         cittadini = cittadini.filter(cognome__icontains=filtro_cognome)
     if filtro_data_nascita:
-        cittadini = cittadini.filter(data_nascita=filtro_data_nascita)
+        cittadini = cittadini.filter(DataNascita=filtro_data_nascita)
     if filtro_luogo_nascita:
-        cittadini = cittadini.filter(luogo_nascita__icontains=filtro_luogo_nascita)
+        cittadini = cittadini.filter(LuogoNascita__icontains=filtro_luogo_nascita)
     if filtro_indirizzo:
         cittadini = cittadini.filter(indirizzo__icontains=filtro_indirizzo)
 
@@ -174,7 +174,7 @@ def ricoveri(request):
 
 # OSPEDALE
 from .models import Ospedale, DirettoreSanitario, Cittadino  # Assumi che DirettoreSanitario e Cittadino siano i modelli appropriati
-from django.shortcuts import render
+from django.shortcuts import render # type: ignore
 
 def ospedali(request):
     filtro_codice = request.POST.get('filtro_codice', '')
