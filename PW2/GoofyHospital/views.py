@@ -63,9 +63,10 @@ def cittadino_view(request):
 
 
 #PATOLOGIE
-from .models import Patologia, Ricovero
+from .queries import select_from_patologia
 
 def patologie(request):
+    # Esistenti logica per filtro_codice, filtro_nome, filtro_criticita
     filtro_codice = request.POST.get('filtro_codice', '')
     filtro_nome = request.POST.get('filtro_nome', '')
     filtro_criticita = request.POST.get('filtro_criticita', '')
@@ -88,7 +89,7 @@ def patologie(request):
         else:
             merged_results[codice]['Tipi'].append('Mortale')
 
-    dettagli_ricoveri_query = """
+        dettagli_ricoveri_query = """
     SELECT PR.CodPatologia, R.Data, R.CodOspedale, R.CodRicovero, R.Paziente, R.Motivo, R.Costo
     FROM Ricovero R
     JOIN PatologiaRicovero PR ON R.CodRicovero = PR.CodRicovero
@@ -112,9 +113,13 @@ def patologie(request):
 
     patologie = []
     for codice, info in merged_results.items():
+        # Utilizzo della query select_from_patologia per ottenere il nome della patologia
+        nome_patologia_result = select_from_patologia(codice)
+        nome_patologia = nome_patologia_result[0][0] if nome_patologia_result else 'Nome non trovato'
+
         patologia = {
             'codice': info['Codice'],
-            'nome': info['Nome'],
+            'nome': nome_patologia,  # Utilizzo del nome ottenuto dalla query
             'criticita': info['Criticità'],
             'tipi': info['Tipi'],
             'conteggio_ricoveri': len(dettagli_ricoveri.get(info['Codice'], [])),
@@ -129,8 +134,6 @@ def patologie(request):
     }
     return render(request, 'patologie.html', context)
 
-
-#RICOVERO
 
 def ricoveri(request):
     filtro_cod_ospedale = request.POST.get('filtro_codOspedale', '')
@@ -173,10 +176,57 @@ def ricoveri(request):
     return render(request, 'ricoveri.html', context)
 
 # OSPEDALE
-from .models import Ospedale, DirettoreSanitario, Cittadino  # Assumi che DirettoreSanitario e Cittadino siano i modelli appropriati
-from django.shortcuts import render # type: ignore
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from .queries import insert_into_ospedale, update_ospedale, delete_from_ospedale, select_from_ospedale, select_direttori_liberi, select_tutti_direttori
+from .models import Cittadino  # Assicurati che il modello Cittadino sia importato correttamente
 
 def ospedali(request):
+    success_message = ""
+    error_message = ""
+
+    if request.method == 'POST':
+        operation = request.POST.get('operation')
+        if operation == 'insert':
+            nome = request.POST.get('filtro_nome')
+            citta = request.POST.get('filtro_citta')
+            indirizzo = request.POST.get('filtro_indirizzo')
+            direttore_sanitario = request.POST.get('filtro_direttoreSanitario')
+
+            # Esegui l'inserimento nel database
+            result = insert_into_ospedale(nome, citta, indirizzo, direttore_sanitario)
+
+            if "Errore" in result:
+                error_message = result
+            else:
+                success_message = "Ospedale inserito con successo."
+
+        elif operation == 'delete':
+            codice = request.POST.get('filtro_codice')
+
+            # Esegui l'eliminazione dal database
+            result = delete_from_ospedale(codice)
+
+            if "Errore" in result:
+                error_message = result
+            else:
+                success_message = "Ospedale eliminato con successo."
+        
+        elif operation == 'update':
+            codice = request.POST.get('filtro_codice')
+            nome = request.POST.get('filtro_nome_new', '')
+            citta = request.POST.get('filtro_citta_new', '')
+            indirizzo = request.POST.get('filtro_indirizzo_new', '')
+            direttore_sanitario = request.POST.get('filtro_direttoreSanitario_new', '')
+
+            # Esegui l'aggiornamento nel database
+            result = update_ospedale(codice, nome, citta, indirizzo, direttore_sanitario)
+
+            if "Errore" in result:
+                error_message = result
+            else:
+                success_message = "Ospedale aggiornato con successo."
+
     filtro_codice = request.POST.get('filtro_codice', '')
     filtro_nome = request.POST.get('filtro_nome', '')
     filtro_citta = request.POST.get('filtro_citta', '')
@@ -215,14 +265,14 @@ def ospedali(request):
     direttori_liberi = []
     for row in direttori_liberi_result_set:
         direttori_liberi.append({
-            'cssn': row[0],  # Sostituisci 'cssn' con il nome appropriato del campo
+            'cssn': row[0],  
             'nome': f"{row[1]} {row[2]}"  # Unisce nome e cognome
         })
 
     tutti_direttori = []
     for row in tutti_direttori_result_set:
         tutti_direttori.append({
-            'cssn': row[0],  # Sostituisci 'cssn' con il nome appropriato del campo
+            'cssn': row[0], 
             'nome': f"{row[1]} {row[2]}"  # Unisce nome e cognome
         })
 
@@ -235,10 +285,9 @@ def ospedali(request):
         'filtro_indirizzo': filtro_indirizzo,
         'filtro_direttoreSanitario': filtro_direttoreSanitario,
         'direttori_liberi': direttori_liberi,
-        'tutti_direttori': tutti_direttori
+        'tutti_direttori': tutti_direttori,
+        'success_message': success_message,
+        'error_message': error_message,
     }
 
     return render(request, 'ospedali.html', context)
-
-
-

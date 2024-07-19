@@ -288,3 +288,14 @@ def select_tutti_direttori():
 
     return results
     
+
+def select_from_patologia(filtro_codice=''):
+    query = "SELECT Nome FROM Patologia WHERE Codice = %s"
+    
+    params = [filtro_codice]
+    
+    with connection.cursor() as cursor:
+        cursor.execute(query, params)
+        result = cursor.fetchone()  # Assuming Codice is unique and only one result will be returned
+    
+    return result

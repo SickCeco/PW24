@@ -200,11 +200,9 @@ function hideChoiceDirettore(codice)
       inputElement.value = codice;
 }
 
-function showPopup(button) {
-  var codicePatologia = button.parentNode.parentNode.children[0].textContent;
-  var dettagliRicoveriString = document.getElementById('ricoveri_' + codicePatologia).value;
+function showPopup(button, dettagliRicoveriString) {
   var dettagliRicoveri = JSON.parse(dettagliRicoveriString);
-  
+
   var popup = document.getElementById("popupDettagli");
   var tableBody = document.getElementById("dettagliRicoveriBody");
   var tableHead = document.getElementById("dettagliRicoveriHead");
@@ -245,6 +243,7 @@ function showPopup(button) {
   popup.style.display = 'block'; // Mostra il popup
   popup.style.zIndex = 100;
 }
+
 
 
 function hidePopup() {

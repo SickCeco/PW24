@@ -52,6 +52,7 @@
                             <button type="submit"><span>Esegui</span></button>    
                         </form>
                     </div>
+                    
                 </div>
             </div>
 
@@ -110,13 +111,14 @@
                         <button type="button" id="closePopupBtn" onclick="hideConfirmation()">&times;</button>
                     </div>
                     <p>Sei sicuro di voler eliminare questo elemento?<br>Così facendo eliminerai anche i ricoveri associati a questo ospedale!</p>
-                    <form id="form_ospedale" action="{% url 'ospedali' %}" method="post">
+                    <form id="form_ospedale_delete" action="{% url 'ospedali' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="operation" value="delete">
-                        <input type="hidden" id ="filtro_codice_delete" name="filtro_codice">
+                        <input type="hidden" id="filtro_codice_delete" name="filtro_codice">
                         <br>
                         <button type="submit"><span>Conferma</span></button>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -127,20 +129,21 @@
                   <button type="button" id="closePopupBtn" onclick="hideUpdate()">&times;</button>
               </div>
               <p>Inserisci i valori da modificare</p>
-                <form id="form_ospedale" action="{% url 'ospedali' %}" method="post" onsubmit="return validateFormUpdate()">
-                    {% csrf_token %}
-                    <input type="hidden" name="operation" value="update">
-                    <input type="hidden" id="filtro_codice_update" name="filtro_codice">
-                    <input type="text" placeholder="Nome" id="filtro_nome_new_up" name="filtro_nome_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
-                    <input type="text" placeholder="Città" id="filtro_citta_new_up" name="filtro_citta_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
-                    <input type="text" placeholder="Indirizzo" id="filtro_indirizzo_new_up" name="filtro_indirizzo_new" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
-                    <div id = "union_button_input_direttore_update" class="union_button_input_direttore">
-                        <button type="button" class = "bottone_cerca_direttore" onclick="showChoiceDirettore('update')"><span>Direttore</span></button>
-                        <input type="text" style="display:none" id="filtro_direttoreSanitario_new_update" value="{{ filtro_direttoreSanitario_new }}" placeholder="Scegli il direttore" name="filtro_direttoreSanitario_new" readonly>    
-                    </div>
-                    <br><br> <br><br>
-                    <button type="submit"><span>Esegui</span></button>
-                </form>
+              <form id="form_ospedale_update" action="{% url 'ospedali' %}" method="post" onsubmit="return validateFormUpdate()">
+                {% csrf_token %}
+                <input type="hidden" name="operation" value="update">
+                <input type="hidden" id="filtro_codice_update" name="filtro_codice">
+                <input type="text" placeholder="Nome" id="filtro_nome_new_up" name="filtro_nome_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                <input type="text" placeholder="Città" id="filtro_citta_new_up" name="filtro_citta_new" pattern="[A-Za-zÀ-ÿ\s]+" title="Solo lettere e spazi sono permessi">
+                <input type="text" placeholder="Indirizzo" id="filtro_indirizzo_new_up" name="filtro_indirizzo_new" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+                <div id="union_button_input_direttore_update" class="union_button_input_direttore">
+                    <button type="button" class="bottone_cerca_direttore" onclick="showChoiceDirettore('update')"><span>Direttore</span></button>
+                    <input type="text" style="display:none" id="filtro_direttoreSanitario_new_update" value="{{ filtro_direttoreSanitario_new }}" placeholder="Scegli il direttore" name="filtro_direttoreSanitario_new" readonly>    
+                </div>
+                <br><br> <br><br>
+                <button type="submit"><span>Esegui</span></button>
+            </form>
+            
             </div>
         </div>
 

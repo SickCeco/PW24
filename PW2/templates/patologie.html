@@ -43,18 +43,21 @@
                     <tbody>
                         
                         {% for patologia in patologie %}
-                            <tr>
-                                <td>{{ patologia.codice }}</td>
-                                <td>{{ patologia.nome }}</td>
-                                <td>{{ patologia.criticita }}</td>
-                                <td>{{ patologia.tipi|join:", " }}</td>
-                                <td>{{ patologia.conteggio_ricoveri }}</td>
-                                <td>
-                                    <button type="button" onclick="showPopup('{{ patologia.codice }}', '{{ patologia.dettagli_ricoveri_json|escapejs }}')">Dettagli</button>
-                                </td>
-                              
-                            </tr>                        
+                            
+                        <tr>
+                            <td>{{ patologia.codice }}</td>
+                            <td>{{ patologia.nome }}</td>
+                            <td>{{ patologia.criticita }}</td>
+                            <td>{{ patologia.tipi|join:", " }}</td>
+                            <td>{{ patologia.conteggio_ricoveri }}</td>
+                            <td>
+                                <button type="button" onclick="showPopup(this, '{{ patologia.dettagli_ricoveri|escapejs }}')">Dettagli</button>
+                            </td>
+                        </tr>                        
                         {% endfor %}
+
+                              
+                     
                     </tbody>
                 </table>
             </div>
