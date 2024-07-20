@@ -93,7 +93,9 @@
                                 <td>{{ row.Nome }}</td>
                                 <td>{{ row.Citta }}</td>
                                 <td>{{ row.Indirizzo }}</td>
-                                <td>{{ row.DirettoreSanitarioCSSN }}</td>
+                                <td><a href="{% url 'cittadino' %}?filtro_cssn={{ row.DirettoreSanitarioCSSN }}">
+                                    {{ row.DirettoreSanitarioCSSN }}
+                                </a></td>
                                 <td>{{ row.DirettoreSanitarioNome }}</td>
                                 <td><button onclick="showUpdate('{{ row.Codice }}')" id="actions"><span>&#128397</span></button></td>
                                 <td><button onclick="showConfirmation('{{ row.Codice }}')" id="actions"><span>&#128465</span></button></td>

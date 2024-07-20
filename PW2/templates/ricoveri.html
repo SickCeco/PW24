@@ -6,7 +6,7 @@
 <head>
     <title>Ricoveri</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
 </head>
@@ -38,26 +38,27 @@
                     <th>Codice Ospedale</th>
                     <th>Codice Ricovero</th>
                     <th>Paziente</th>
-                    <th>Data</th>
-                    <th>Durata</th>
+                    <th onclick="sortTable(3)">Data↕</th>
+                    <th onclick="sortTable(4)">Durata↕</th>
                     <th>Motivo</th>
-                    <th>Costo</th>
-                    <th>Patologia</th>
+                    <th onclick="sortTable(6)">Costo↕</th>
+                    <th onclick="sortTable(7)">Patologia↕</th>
                 </tr>
             </thead>
             <tbody>
                 {% for riga in result %}
-                <tr>
-                    <td>{{ riga.cod_ospedale }}</td>
-                    <td>{{ riga.cod_ricovero }}</td>
-                    <td>{{ riga.paziente }}</td>
-                    <td>{{ riga.data_ricovero }}</td>
-                    <td>{{ riga.durata }}</td>
-                    <td>{{ riga.motivo }}</td>
-                    <td>{{ riga.costo }}</td>
-                    <td>{{ riga.patologia }}</td>
-                </tr>
-                {% endfor %}
+        <tr>
+            <td><a href="{% url 'ospedali' %}?filtro_codice={{ riga.cod_ospedale }}">{{ riga.cod_ospedale }}</a></td>
+            <td>{{ riga.cod_ricovero }}</td>
+            <td><a href="{% url 'cittadino' %}?filtro_cssn={{ riga.paziente }}">{{ riga.paziente }}</a></td>
+            <td>{{ riga.data_ricovero }}</td>
+            <td>{{ riga.durata }}</td>
+            <td>{{ riga.motivo }}</td>
+            <td>{{ riga.costo }}</td>
+            <td><a href="{% url 'patologie' %}?filtro_nome={{ riga.patologia }}">{{ riga.patologia }}</a></td>
+        </tr>
+        </tr>
+        {% endfor %}
             </tbody>
         </table>
     </div>
