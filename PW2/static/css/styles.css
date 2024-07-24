@@ -642,4 +642,80 @@ input[type=date]:focus {
   outline: none;
   transition: all 0.5s ease; 
 }
+
+
+
+.button {
+  background-color: #007bff; /* Colore di sfondo */
+  color: #fff; /* Colore del testo */
+  border: none; /* Nessun bordo */
+  border-radius: 4px; /* Angoli arrotondati */
+  padding: 10px 20px; /* Spaziatura interna */
+  font-size: 16px; /* Dimensione del testo */
+  cursor: pointer; /* Puntatore a mano */
+  transition: background-color 0.3s ease; /* Transizione del colore di sfondo */
+}
+
+.button:hover {
+  background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
+}
+
+.button:focus {
+  outline: none; /* Rimuove il bordo di focus */
+}
+
+
+
+
+
+
+/* styles.css */
+
+/* Aggiungi eventuali stili personalizzati qui */
+
+#wholePage {
+  background-color: #f8f9fa;
+}
+
+#search-filter {
+  margin-bottom: 20px;
+}
+
+#operation-selection button {
+  margin-right: 10px;
+}
+
+.reset {
+  display: inline-block;
+  vertical-align: middle;
+  padding-right: 8px;
+}
+
+.btn-group .btn {
+  margin-right: 5px;
+}
+
+.table th, .table td {
+  vertical-align: middle !important;
+}
+
+#actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table th {
+  cursor: pointer;
+}
+
+.table .thead-dark th {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.alert {
+  margin-top: 20px;
+}
+
 }

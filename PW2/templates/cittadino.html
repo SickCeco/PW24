@@ -1,9 +1,11 @@
+
 <!DOCTYPE HTML>
 <html>
   <head>
       <title>Cittadino</title>
       {% load static %}
       <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
       <link rel="stylesheet" href="{% static 'css/styles.css' %}">
       <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
   </head>
@@ -17,24 +19,24 @@
       {% include 'navigation.html' %}
     </div>
 
-    <div id="search-filter">
-      <form id="form_cittadini" action="{% url 'cittadino' %}" method="post">
+    <div id="search-filter" class="container mt-4">
+      <form id="form_cittadini" action="{% url 'cittadino' %}" method="post" class="form-inline">
         {% csrf_token %}
-        <button type="button" class="reset" onClick="resetFormC()"><span class="reset">Reset &#128260</span></button>
-        <input type="text" value="{{ filtro_cssn }}" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="code_input" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
-        <input type="text" value="{{ filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome">
-        <input type="text" value="{{ filtro_cognome }}" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome">
-        <input type="date" value="{{ filtro_data_nascita }}" placeholder="Data di Nascita" id="filtro_data_nascita" name="filtro_data_nascita">
-        <input type="text" value="{{ filtro_luogo_nascita }}" placeholder="Luogo di Nascita" id="filtro_luogo_nascita" name="filtro_luogo_nascita">
-        <input type="text" value="{{ filtro_indirizzo }}" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
-        <button type="submit"><span>Cerca &#128269</span></button>
+        <button type="button" class="botton" onClick="resetFormC()">Reset &#128260</button>
+        <input type="text" value="{{ filtro_cssn }}" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="form-control mr-2" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
+        <input type="text" value="{{ filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome" class="form-control mr-2">
+        <input type="text" value="{{ filtro_cognome }}" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome" class="form-control mr-2">
+        <input type="date" value="{{ filtro_data_nascita }}" placeholder="Data di Nascita" id="filtro_data_nascita" name="filtro_data_nascita" class="form-control mr-2">
+        <input type="text" value="{{ filtro_luogo_nascita }}" placeholder="Luogo di Nascita" id="filtro_luogo_nascita" name="filtro_luogo_nascita" class="form-control mr-2">
+        <input type="text" value="{{ filtro_indirizzo }}" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" class="form-control mr-2" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+        <button type="submit" class="botton">Cerca &#128269</button>
       </form>
     </div>
 
-    <div id="content">
-      <div class="table-container">
-        <table>
-          <thead>
+    <div id="content" class="container mt-4">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="head">
             <tr>
               <th onclick="sortTable(0)">CSSN ↕</th>
               <th onclick="sortTable(1)">Nome ↕</th>
@@ -50,8 +52,8 @@
               <td>{{ cittadino.cssn }}</td>
               <td>{{ cittadino.nome }}</td>
               <td>{{ cittadino.cognome }}</td>
-              <td>{{ cittadino.DataNascita }}</td>
-              <td>{{ cittadino.LuogoNascita }}</td>
+              <td>{{ cittadino.data_nascita }}</td>
+              <td>{{ cittadino.luogo_nascita }}</td>
               <td>{{ cittadino.indirizzo }}</td>
             </tr>
             {% endfor %}
@@ -59,9 +61,13 @@
         </table>
       </div>
     </div>
-    <br><br><br>
-    <div id="footer">
+
+    <div id="footer" class="mt-4">
       {% include 'footer.html' %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   </body>
 </html>
