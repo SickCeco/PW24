@@ -1,5 +1,5 @@
 # models.py
-from django.db import models
+from django.db import models # type: ignore
 
 #CITTADINO
 class Cittadino(models.Model):

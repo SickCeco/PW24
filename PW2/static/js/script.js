@@ -96,7 +96,6 @@ function selectOperation(operation)
 
     // Imposta il valore dell'operazione nel campo nascosto
     document.getElementById("form_ospedale").querySelector('input[name="operation"]').value = operation;
-    
  }
  
  

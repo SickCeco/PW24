@@ -6,7 +6,7 @@
       {% load static %}
       <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-      <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+      <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
       <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
   </head>
 
@@ -19,10 +19,10 @@
       {% include 'navigation.html' %}
     </div>
 
-    <div id="search-filter" class="container mt-4">
-      <form id="form_cittadini" action="{% url 'cittadino' %}" method="post" class="form-inline">
+    <div id="search-filter" class="mb-4">
+      <form id="form_cittadini" action="{% url 'cittadino' %}" method="post">
         {% csrf_token %}
-        <button type="button" class="botton" onClick="resetFormC()">Reset &#128260</button>
+        <button type="button" class="reset" onClick="resetFormC()">Reset &#128260</button>
         <input type="text" value="{{ filtro_cssn }}" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="form-control mr-2" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
         <input type="text" value="{{ filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome" class="form-control mr-2">
         <input type="text" value="{{ filtro_cognome }}" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome" class="form-control mr-2">

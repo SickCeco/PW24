@@ -1,14 +1,11 @@
 from django.http import HttpResponse # type: ignore
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect # type: ignore
 from .queries import * 
 from .models import *
 import json
 
 def home(request):
     return render(request, "home.html")
-
-def funct(request):
-    return HttpResponse("Ciao Tubw")
 
 def ospedali(request):
     return render(request, 'ospedali.html')
@@ -159,6 +156,16 @@ def ospedali(request):
     # Gestione delle operazioni tramite POST
     if request.method == 'POST':
         operation = request.POST.get('operation')
+
+        if operation == 'select':
+            codice = request.POST.get('filtro_codice')
+            nome = request.POST.get('filtro_nome')
+            citta = request.POST.get('filtro_citta')
+            indirizzo = request.POST.get('filtro_indirizzo')
+            direttore_sanitario = request.POST.get('filtro_direttoreSanitario')
+
+            result_set = select_from_ospedale(codice, nome, citta, indirizzo, direttore_sanitario)
+
         if operation == 'insert':
             nome = request.POST.get('filtro_nome')
             citta = request.POST.get('filtro_citta')
@@ -195,20 +202,17 @@ def ospedali(request):
                 error_message = result
             else:
                 success_message = "Ospedale aggiornato con successo."
+    else:
+        codice = request.GET.get('filtro_codice', '')
+        result_set = select_from_ospedale(codice)
 
-    # Gestione dei filtri tramite GET
-    filtro_codice = request.GET.get('filtro_codice', '')
-    filtro_nome = request.GET.get('filtro_nome', '')
-    filtro_citta = request.GET.get('filtro_citta', '')
-    filtro_indirizzo = request.GET.get('filtro_indirizzo', '')
-    filtro_direttoreSanitario = request.GET.get('filtro_direttoreSanitario', '')
-
-    # Se non ci sono filtri GET, usa i filtri POST se disponibili
-    if not filtro_codice:
-        filtro_codice = request.POST.get('filtro_codice', '')
-
-    result_set = select_from_ospedale(filtro_codice, filtro_nome, filtro_citta,
-                                      filtro_indirizzo, filtro_direttoreSanitario)
+    codice = request.GET.get('filtro_codice')
+    nome = request.GET.get('filtro_nome', '')
+    citta = request.GET.get('filtro_citta', '')
+    indirizzo = request.GET.get('filtro_indirizzo', '')
+    direttore_sanitario = request.GET.get('filtro_direttoreSanitario', '')  
+    
+    result_set = select_from_ospedale(codice)                              
 
     results = []
     for row in result_set:
@@ -248,11 +252,11 @@ def ospedali(request):
 
     context = {
         'result': results,
-        'filtro_codice': filtro_codice,
-        'filtro_nome': filtro_nome,
-        'filtro_citta': filtro_citta,
-        'filtro_indirizzo': filtro_indirizzo,
-        'filtro_direttoreSanitario': filtro_direttoreSanitario,
+        'filtro_codice': codice,
+        'filtro_nome': nome,
+        'filtro_citta': citta,
+        'filtro_indirizzo': indirizzo,
+        'filtro_direttoreSanitario': direttore_sanitario,
         'direttori_liberi': direttori_liberi,
         'tutti_direttori': tutti_direttori,
         'success_message': success_message,
@@ -260,7 +264,6 @@ def ospedali(request):
     }
 
     return render(request, 'ospedali.html', context)
-
 def ricoveri(request):
     filtro_cod_ospedale = request.POST.get('filtro_codOspedale', '')
     filtro_cod_ricovero = request.POST.get('filtro_codRicovero', '')

@@ -5,7 +5,7 @@
 <head>
     <title>Patologie</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
     <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
     <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
 </head>
@@ -14,7 +14,7 @@
     <div class="container mt-5">
         <div id="search-filter" class="p-3 rounded">
             <div id="filtro">
-                <form id="form_patologie" action="{% url 'patologie' %}" method="post" class="form-inline">
+                <form id="form_patologie" action="{% url 'patologie' %}" method="post" >
                     {% csrf_token %}
                     <button type="button" class="reset" onClick="resetFormP()">
                         <span class="reset">Reset &#128260</span>
@@ -30,7 +30,7 @@
         <div id="content" class="mt-4">
             {% if patologie %}
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="tablePatologie">
+                    <table class="table table-bordered table-hover" id="tablePatologie">
                         <thead class="header">
                             <tr class="header">
                                 <th onclick="sortTable(0)">Codice ↕</th>
@@ -70,7 +70,7 @@
             </div>
             <div class="table-responsive">
                 <label id="ricoveri_null"></label>
-                <table class="table table-striped table-bordered">
+                <table class="table table-bordered table-hover">
                     <thead id="dettagliRicoveriHead" class="head">
                     </thead>
                     <tbody id="dettagliRicoveriBody">
