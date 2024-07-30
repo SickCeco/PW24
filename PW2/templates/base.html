@@ -1,6 +1,18 @@
 <!-- templates/myapp/base.html -->
  {% load static %}
 <!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+  <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
+  <title>Titolo della Pagina</title>
+</head>
+<body>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,22 +20,11 @@
     <title>Goofy Hospital</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body>
 
     {%include "header.html" %}
-    
-    <nav>
-        <div id = "div-navigation">
-        <ul>
-             
-            <li><a href="{% url 'home' %}"><img src="{% static '/img/Home.png' %}" alt="Home" class="grow"></a></li>
-            <li><a href="{% url 'cittadini' %}"><img src="{% static '/img/Cittadini.png' %}" id="tastoCittadino"   alt="Cittadino" class="grow"></a></li>
-            <li><a href="{% url 'ospedali' %}"><img  src="{% static '/img/OSPEDALI__1_.png' %}"  alt="Ospedale" class="grow"></a></li>
-            <li><a href="{% url 'ricoveri' %}"><img  src="{% static '/img/2.png' %}"  alt="Ricovero" class="grow"></a></li>
-            <li><a href="{% url 'patologie' %}"><img  src="{% static '/img/OSPEDALI__3_.png' %}" alt="Patologie" class="grow"></a></li>
-        </ul>
-        </div>
-    </nav>
+    {%include "navigation.html" %}
     
     <div class="content">
         {% block content %}

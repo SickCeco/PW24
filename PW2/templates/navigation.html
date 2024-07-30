@@ -1,0 +1,12 @@
+{% load static%}
+<nav>
+    <div id = "div-navigation">
+    <ul>    
+        <li><a href="{% url 'home' %}"><img src="{% static '/img/Home.png' %}" alt="Home" class="grow"></a></li>
+        <li><a href="{% url 'cittadino' %}"><img src="{% static '/img/Cittadini.png' %}" id="tastoCittadino"   alt="Cittadino" class="grow"></a></li>
+        <li><a href="{% url 'ospedali' %}"><img  src="{% static '/img/OSPEDALI__1_.png' %}"  alt="Ospedale" class="grow"></a></li>
+        <li><a href="{% url 'ricoveri' %}"><img  src="{% static '/img/2.png' %}"  alt="Ricovero" class="grow"></a></li>
+        <li><a href="{% url 'patologie' %}"><img  src="{% static '/img/OSPEDALI__3_.png' %}" alt="Patologie" class="grow"></a></li>
+    </ul>
+    </div>
+</nav>

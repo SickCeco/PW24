@@ -1,4 +1,90 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% block content %}
-<h1>Patologie</h1>
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Patologie</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div id="search-filter" class="p-3 rounded">
+            <div id="filtro">
+                <form id="form_patologie" action="{% url 'patologie' %}" method="post" >
+                    {% csrf_token %}
+                    <button type="button" class="reset" onClick="resetFormP()">
+                        <span class="reset">Reset &#128260</span>
+                    </button>
+                    <input type="text" value="{{ request.POST.filtro_codice }}" placeholder="Codice" id="filtro_codice" name="filtro_codice" pattern="PAT\d{3}" class="form-control code_input mx-2" title="Il codice deve essere nel formato PAT seguito da tre cifre.">
+                    <input type="text" value="{{ request.POST.filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome" class="form-control mx-2">
+                    <input type="text" value="{{ request.POST.filtro_criticita }}" placeholder="Criticità" id="filtro_criticita" name="filtro_criticita" class="form-control mx-2">
+                    <button type="submit" class="search-filter"><span>Cerca &#128269</span></button>
+                </form>
+            </div>
+        </div>
+
+        <div id="content" class="mt-4">
+            {% if patologie %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tablePatologie">
+                        <thead class="header">
+                            <tr class="header">
+                                <th onclick="sortTable(0)">Codice ↕</th>
+                                <th onclick="sortTable(1)">Nome ↕</th>
+                                <th onclick="sortTable(2)">Criticità ↕</th>
+                                <th onclick="sortTable(3)">Tipo ↕</th>
+                                <th onclick="sortTable(4)">Ricoveri ↕</th>
+                                <th>Dettagli</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for patologia in patologie %}
+                            <tr>
+                                <td>{{ patologia.codice }}</td>
+                                <td>{{ patologia.nome }}</td>
+                                <td>{{ patologia.criticita }}</td>
+                                <td>{{ patologia.tipi|join:", " }}</td>
+                                <td>{{ patologia.conteggio_ricoveri }}</td>
+                                <td>
+                                    <button type="button" class="button" onclick="showPopup(this, '{{ patologia.dettagli_ricoveri|escapejs }}')">Dettagli</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>Nessuna patologia trovata.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="popupDettagli" class="pop-up-div-2">
+        <div class="button-2-1">
+            <div class="button-chiusura">
+                <button type="button" id="closePopupBtn" class="btn btn-danger" onclick="hidePopup()">&times;</button>
+            </div>
+            <div class="table-responsive">
+                <label id="ricoveri_null"></label>
+                <table class="table table-bordered table-hover">
+                    <thead id="dettagliRicoveriHead" class="head">
+                    </thead>
+                    <tbody id="dettagliRicoveriBody">
+                        <!-- i dettagli dei ricoveri sono caricati qui tramite JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer" class="mt-5">
+        {% include 'footer.html' %}
+    </div>
+
+</body>
+</html>
 {% endblock %}

@@ -1,0 +1,73 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <title>Cittadino</title>
+      {% load static %}
+      <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+      <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
+      <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+  </head>
+
+  <body>
+    <div id="header">
+      {% include 'header.html' %}
+    </div>
+
+    <div id="navigation">
+      {% include 'navigation.html' %}
+    </div>
+
+    <div id="search-filter" class="mb-4">
+      <form id="form_cittadini" action="{% url 'cittadino' %}" method="post">
+        {% csrf_token %}
+        <button type="button" class="reset" onClick="resetFormC()">Reset &#128260</button>
+        <input type="text" value="{{ filtro_cssn }}" placeholder="CSSN" id="filtro_cssn" name="filtro_cssn" pattern="CSSN\d+" class="form-control mr-2" title="Il codice deve essere nel formato CSSN seguito da almeno un numero.">
+        <input type="text" value="{{ filtro_nome }}" placeholder="Nome" id="filtro_nome" name="filtro_nome" class="form-control mr-2">
+        <input type="text" value="{{ filtro_cognome }}" placeholder="Cognome" id="filtro_cognome" name="filtro_cognome" class="form-control mr-2">
+        <input type="date" value="{{ filtro_data_nascita }}" placeholder="Data di Nascita" id="filtro_data_nascita" name="filtro_data_nascita" class="form-control mr-2">
+        <input type="text" value="{{ filtro_luogo_nascita }}" placeholder="Luogo di Nascita" id="filtro_luogo_nascita" name="filtro_luogo_nascita" class="form-control mr-2">
+        <input type="text" value="{{ filtro_indirizzo }}" placeholder="Indirizzo" id="filtro_indirizzo" name="filtro_indirizzo" pattern="^[A-Za-z\s]+,\s\d+$" class="form-control mr-2" title="L'indirizzo deve essere nel formato 'Nome della Via, Numero Civico'.">
+        <button type="submit" class="botton">Cerca &#128269</button>
+      </form>
+    </div>
+
+    <div id="content" class="container mt-4">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead class="head">
+            <tr>
+              <th onclick="sortTable(0)">CSSN ↕</th>
+              <th onclick="sortTable(1)">Nome ↕</th>
+              <th onclick="sortTable(2)">Cognome ↕</th>
+              <th onclick="sortTable(3)">Data di Nascita ↕</th>
+              <th onclick="sortTable(4)">Luogo di Nascita ↕</th>
+              <th onclick="sortTable(5)">Indirizzo ↕</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cittadino in results %}
+            <tr>
+              <td>{{ cittadino.cssn }}</td>
+              <td>{{ cittadino.nome }}</td>
+              <td>{{ cittadino.cognome }}</td>
+              <td>{{ cittadino.data_nascita }}</td>
+              <td>{{ cittadino.luogo_nascita }}</td>
+              <td>{{ cittadino.indirizzo }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="footer" class="mt-4">
+      {% include 'footer.html' %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
