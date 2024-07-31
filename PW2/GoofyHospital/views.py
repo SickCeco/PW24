@@ -1,29 +1,33 @@
-from django.http import HttpResponse # type: ignore
-from django.shortcuts import render, redirect # type: ignore
-from .queries import * 
-from .models import *
+from django.http import HttpResponse # Funzioni per gestire le risposte HTTP
+from django.shortcuts import render, redirect # Funzioni per renderizzare template e redirigere
+from .queries import * # IQuery definite nel modulo queries
+from .models import * # Modelli definiti nel modulo models
 import json
 
 def home(request):
+    # Funzione render per la pagina principale
     return render(request, "home.html")
 
 def ospedali(request):
+    # Funzione render per la pagina degli ospedali
     return render(request, 'ospedali.html')
 
 def ricoveri(request):
+    # Funzione render per la pagina dei ricoveri
     return render(request, 'ricoveri.html')
 
 def patologie(request):
+    # Funzione render per la pagina delle patologie
     return render(request, 'patologie.html')
 
 
 #CITTADINO
 
 def cittadino(request):
-    # Ottenere i parametri dal GET per i linkabili
+    # Ottiene i parametri dal GET per i dati linkabili
     filtro_cssn_linkabile = request.GET.get('filtro_cssn', '')
 
-    # Ottenere i parametri dal POST per i filtri di ricerca
+    # Ottiene i parametri dal POST per i filtri di ricerca
     filtro_cssn = request.POST.get('filtro_cssn', '')
     filtro_nome = request.POST.get('filtro_nome', '')
     filtro_cognome = request.POST.get('filtro_cognome', '')
@@ -31,15 +35,15 @@ def cittadino(request):
     filtro_luogo_nascita = request.POST.get('filtro_luogo_nascita', '')
     filtro_indirizzo = request.POST.get('filtro_indirizzo', '')
 
-    # Se il filtro linkabile è presente, usalo per il filtro principale
+    # Se il filtro linkabile è presente, viene usato per il filtro principale
     if filtro_cssn_linkabile:
         filtro_cssn = filtro_cssn_linkabile
 
-    # Esegui la query per ottenere i cittadini filtrati
+    # Esegue la query per ottenere i cittadini filtrati
     result_set = select_from_cittadino(filtro_cssn, filtro_nome, filtro_cognome,
                                        filtro_data_nascita, filtro_luogo_nascita, filtro_indirizzo)
 
-    # Convertire i risultati della query in un formato utilizzabile nel template
+    # Converte i risultati della query in un formato utilizzabile nel template
     results = []
     for row in result_set:
         result_dict = {
@@ -52,6 +56,7 @@ def cittadino(request):
         }
         results.append(result_dict)
 
+    # Creare il contesto da passare al template
     context = {
         'results': results,
         'filtro_cssn': filtro_cssn,
@@ -62,6 +67,7 @@ def cittadino(request):
         'filtro_indirizzo': filtro_indirizzo,
     }
 
+    # Renderizzare il template 'cittadino.html' con il contesto
     return render(request, 'cittadino.html', context)
 
 
@@ -105,6 +111,7 @@ def patologie(request):
         FROM Ricovero R
         JOIN PatologiaRicovero PR ON R.CodRicovero = PR.CodRicovero
     """
+    # Eseguire la query per ottenere i dettagli dei ricoveri
     with connection.cursor() as cursor:
         cursor.execute(dettagli_ricoveri_query)
         dettagli_ricoveri_result = cursor.fetchall()
@@ -122,7 +129,7 @@ def patologie(request):
             'Costo': row[6]
         })
 
-    # Preparare i risultati finali
+    # Preparare i risultati finali delle patologie
     patologie = []
     for codice, info in merged_results.items():
         nome_patologia_result = select_from_patologia(codice)
@@ -138,6 +145,7 @@ def patologie(request):
         }
         patologie.append(patologia)
 
+    # Creare il contesto da passare al template
     context = {
         'patologie': patologie,
         'filtro_codice': filtro_codice,
@@ -145,6 +153,7 @@ def patologie(request):
         'filtro_criticita': filtro_criticita,
     }
     
+    # Renderizzare il template 'patologie.html' con il contesto
     return render(request, 'patologie.html', context)
 
 # OSPEDALE
@@ -152,7 +161,7 @@ def ospedali(request):
     success_message = ""
     error_message = ""
 
-    # Gestione delle operazioni tramite POST
+    # Gestione delle operazioni tramite POST (inserimento, aggiornamento, eliminazione)
     if request.method == 'POST':
         operation = request.POST.get('operation')
         if operation == 'insert':
@@ -208,6 +217,7 @@ def ospedali(request):
 
         result_set = select_from_ospedale(filtro_codice, filtro_nome, filtro_citta, filtro_indirizzo, filtro_direttoreSanitario)
 
+    # Convertire i risultati della query in un formato utilizzabile nel template
     results = []
     for row in result_set:
         direttore_sanitario_cssn = row[4]
@@ -227,6 +237,7 @@ def ospedali(request):
         }
         results.append(result_dict)
 
+    # Ottenere i direttori sanitari liberi e tutti i direttori
     direttori_liberi_result_set = select_direttori_liberi()
     tutti_direttori_result_set = select_tutti_direttori()
 
@@ -244,6 +255,7 @@ def ospedali(request):
             'nome': f"{row[1]} {row[2]}"
         })
 
+    # Creare il contesto da passare al template
     context = {
         'result': results,
         'filtro_codice': filtro_codice,
@@ -257,11 +269,13 @@ def ospedali(request):
         'error_message': error_message,
     }
 
+    # Renderizzare il template 'ospedali.html' con il contesto
     return render(request, 'ospedali.html', context)
 
 
 
 def ricoveri(request):
+    # Ottenere i filtri di ricerca dal POST
     filtro_cod_ospedale = request.POST.get('filtro_codOspedale', '')
     filtro_cod_ricovero = request.POST.get('filtro_codRicovero', '')
     filtro_paziente = request.POST.get('filtro_paziente', '')
@@ -270,6 +284,7 @@ def ricoveri(request):
     filtro_motivo = request.POST.get('filtro_motivo', '')
     filtro_costo = request.POST.get('filtro_costo', '')
 
+    # Eseguire la query per ottenere i ricoveri filtrati
     result_set = select_from_ricovero(filtro_cod_ospedale, filtro_cod_ricovero, filtro_paziente,
                                       filtro_data_ricovero, filtro_durata, filtro_motivo, filtro_costo)
 
@@ -284,10 +299,11 @@ def ricoveri(request):
             'durata': row[4],
             'motivo': row[5],
             'costo': row[6],
-            'patologia': row[8] 
+            'patologia': row[8] # Nota: la patologia è mappata a index 8, non definito in query
         }
         results.append(result_dict)
 
+    # Creare il contesto da passare al template
     context = {
         'result': results,
         'filtro_codOspedale': filtro_cod_ospedale,
@@ -299,4 +315,5 @@ def ricoveri(request):
         'filtro_costo': filtro_costo,
     }
 
+    # Renderizzare il template 'ricoveri.html' con il contesto
     return render(request, 'ricoveri.html', context)
