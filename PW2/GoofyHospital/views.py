@@ -200,12 +200,13 @@ def ospedali(request):
         result_set = select_from_ospedale(filtro_codice, '', '', '', '')
     else:
         # Se il filtro codice non è presente nei parametri GET, usa i filtri POST se disponibili
+        filtro_codice = request.POST.get('filtro_codice', '')
         filtro_nome = request.POST.get('filtro_nome', '')
         filtro_citta = request.POST.get('filtro_citta', '')
         filtro_indirizzo = request.POST.get('filtro_indirizzo', '')
         filtro_direttoreSanitario = request.POST.get('filtro_direttoreSanitario', '')
 
-        result_set = select_from_ospedale('', filtro_nome, filtro_citta, filtro_indirizzo, filtro_direttoreSanitario)
+        result_set = select_from_ospedale(filtro_codice, filtro_nome, filtro_citta, filtro_indirizzo, filtro_direttoreSanitario)
 
     results = []
     for row in result_set:
