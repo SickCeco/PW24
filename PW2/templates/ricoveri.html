@@ -2,72 +2,72 @@
 {% block content %}
 <!DOCTYPE HTML>
 <html>
-<head>
-    <title>Ricoveri</title>
-    {% load static %}
-    <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
-    <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
-    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
-<body>
+    <head>
+        <title>Ricoveri</title>
+        {% load static %}
+        <link rel="shortcut icon" href="{% static 'img/GOOFY_HOSPITAL__1_.png' %}" />
+        <link rel="stylesheet" href="{% static 'css/styles_btstrp.css' %}">
+        <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    </head>
+    <body>
 
-    <div id="search-filter" class="mb-4">
-        <form id="form_ricoveri" action="{% url 'ricoveri' %}" method="post">
-            {% csrf_token %}
-            <button type="button" class="reset" onClick="resetFormR()">
-                <span class="reset">Reset &#128260</span>
-            </button>
-            <input type="text" value="{{ filtro_codOspedale }}" placeholder="Codice Ospedale" id="filtro_codOspedale" name="filtro_codOspedale" pattern="OSP\d{2}" class="form-control mr-2" title="Il codice deve essere nel formato OSP seguito da due cifre.">
-            <input type="text" value="{{ filtro_codRicovero }}" placeholder="Codice Ricovero" id="filtro_codRicovero" name="filtro_codRicovero" pattern="RIC\d{3}" class="form-control mb-2 mr-2" title="Il codice deve essere nel formato RIC seguito da tre cifre.">
-            <input type="text" value="{{ filtro_paziente }}" placeholder="Paziente" id="filtro_paziente" name="filtro_paziente" pattern="CSSN\d+" class="form-control mb-2 mr-2" title="Il codice deve essere nel formato CSSN seguito da almeno una cifra.">
-            <input type="date" value="{{ filtro_dataRicovero }}" placeholder="Data Ricovero" id="filtro_dataRicovero" name="filtro_dataRicovero" class="form-control mb-2 mr-2">
-            <input type="text" value="{{ filtro_durata }}" placeholder="Durata" id="filtro_durata" name="filtro_durata" class="form-control mb-2 mr-2">
-            <input type="text" value="{{ filtro_motivo }}" placeholder="Motivo" id="filtro_motivo" name="filtro_motivo" class="form-control mb-2 mr-2">
-            <input type="text" value="{{ filtro_costo }}" placeholder="Costo" id="filtro_costo" name="filtro_costo" class="form-control mb-2 mr-2">
-            <button type="submit" class="search-filter"><span>Cerca &#128269</span></button>
-        </form>
-    </div>
+        <div id="search-filter" class="mb-4">
+            <form id="form_ricoveri" action="{% url 'ricoveri' %}" method="post">
+                {% csrf_token %}
+                <button type="button" class="reset" onClick="resetFormR()">
+                    <span class="reset">Reset &#128260</span>
+                </button>
+                <input type="text" value="{{ filtro_codOspedale }}" placeholder="Codice Ospedale" id="filtro_codOspedale" name="filtro_codOspedale" pattern="OSP\d{2}" class="form-control mr-2" title="Il codice deve essere nel formato OSP seguito da due cifre.">
+                <input type="text" value="{{ filtro_codRicovero }}" placeholder="Codice Ricovero" id="filtro_codRicovero" name="filtro_codRicovero" pattern="RIC\d{3}" class="form-control mb-2 mr-2" title="Il codice deve essere nel formato RIC seguito da tre cifre.">
+                <input type="text" value="{{ filtro_paziente }}" placeholder="Paziente" id="filtro_paziente" name="filtro_paziente" pattern="CSSN\d+" class="form-control mb-2 mr-2" title="Il codice deve essere nel formato CSSN seguito da almeno una cifra.">
+                <input type="date" value="{{ filtro_dataRicovero }}" placeholder="Data Ricovero" id="filtro_dataRicovero" name="filtro_dataRicovero" class="form-control mb-2 mr-2">
+                <input type="text" value="{{ filtro_durata }}" placeholder="Durata" id="filtro_durata" name="filtro_durata" class="form-control mb-2 mr-2">
+                <input type="text" value="{{ filtro_motivo }}" placeholder="Motivo" id="filtro_motivo" name="filtro_motivo" class="form-control mb-2 mr-2">
+                <input type="text" value="{{ filtro_costo }}" placeholder="Costo" id="filtro_costo" name="filtro_costo" class="form-control mb-2 mr-2">
+                <button type="submit" class="search-filter"><span>Cerca &#128269</span></button>
+            </form>
+        </div>
 
-<div id="content" class="container mt-4">
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
-            <thead class="header">
-                <tr class="header">
-                    <th>Codice Ospedale</th>
-                    <th>Codice Ricovero</th>
-                    <th>Paziente</th>
-                    <th onclick="sortTable(3)">Data↕</th>
-                    <th onclick="sortTable(4)">Durata↕</th>
-                    <th>Motivo</th>
-                    <th onclick="sortTable(6)">Costo↕</th>
-                    <th onclick="sortTable(7)">Patologia↕</th>
+        <div id="content" class="container mt-4">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="header">
+                        <tr class="header">
+                            <th>Codice Ospedale</th>
+                            <th>Codice Ricovero</th>
+                            <th>Paziente</th>
+                            <th onclick="sortTable(3)">Data↕</th>
+                            <th onclick="sortTable(4)">Durata↕</th>
+                            <th>Motivo</th>
+                            <th onclick="sortTable(6)">Costo↕</th>
+                            <th onclick="sortTable(7)">Patologia↕</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for riga in result %}
+                <tr>
+                    <td><a href="{% url 'ospedali' %}?filtro_codice={{ riga.cod_ospedale }}">{{ riga.cod_ospedale }}</a></td>
+                    <td>{{ riga.cod_ricovero }}</td>
+                    <td><a href="{% url 'cittadino' %}?filtro_cssn={{ riga.paziente }}">{{ riga.paziente }}</a></td>
+                    <td>{{ riga.data_ricovero }}</td>
+                    <td>{{ riga.durata }}</td>
+                    <td>{{ riga.motivo }}</td>
+                    <td>{{ riga.costo }}</td>
+                    <td><a href="{% url 'patologie' %}?filtro_nome={{ riga.patologia }}">{{ riga.patologia }}</a></td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for riga in result %}
-        <tr>
-            <td><a href="{% url 'ospedali' %}?filtro_codice={{ riga.cod_ospedale }}">{{ riga.cod_ospedale }}</a></td>
-            <td>{{ riga.cod_ricovero }}</td>
-            <td><a href="{% url 'cittadino' %}?filtro_cssn={{ riga.paziente }}">{{ riga.paziente }}</a></td>
-            <td>{{ riga.data_ricovero }}</td>
-            <td>{{ riga.durata }}</td>
-            <td>{{ riga.motivo }}</td>
-            <td>{{ riga.costo }}</td>
-            <td><a href="{% url 'patologie' %}?filtro_nome={{ riga.patologia }}">{{ riga.patologia }}</a></td>
-        </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<div id="footer">
-    {% include 'footer.html' %}
-</div>
-{% endblock %}
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-
+        <div id="footer">
+            {% include 'footer.html' %}
+        </div>
+            {% endblock %}
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>
