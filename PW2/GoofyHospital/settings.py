@@ -38,9 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'GoofyHospital',
     'bootstrap4',
+    
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -76,12 +79,19 @@ WSGI_APPLICATION = 'GoofyHospital.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# settings.py
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'my_fraatmz6',
+        'USER': 'root',
+        'PASSWORD': 'GoofyHospital',
+        'HOST': 'localhost',  # O l'IP del server MySQL
+        'PORT': '3306',       # Il porto MySQL predefinito
     }
 }
+
 
 
 # Password validation
